@@ -1,11 +1,12 @@
 import React from 'react'
 import { stages, sampleJobs } from '../../sampleData'
 import { Stage, Job } from '../../types/board'
+import Card from '../Card/Card'
 
 export const Board: React.FC = () => {
+	// Group jobs by their stage
 	const jobsByStage = stages.reduce((acc, stage) => {
 		acc[stage] = sampleJobs.filter((job) => job.stage === stage)
-
 		return acc
 	}, {} as Record<Stage, Job[]>)
 
@@ -16,14 +17,7 @@ export const Board: React.FC = () => {
 					<h2 className='text-lg font-bold mb-4'>{stage}</h2>
 					<div className='space-y-2'>
 						{jobsByStage[stage]?.map((job) => (
-							<div
-								key={job.id}
-								className='p-4 bg-white rounded-lg shadow-sm border'
-							>
-								<h3 className='font-medium'>{job.title}</h3>
-								<p className='text-sm text-gray-500'>{job.company}</p>
-								<p className='text-sm text-blue-500'>{job.status}</p>
-							</div>
+							<Card key={job.id} job={job} />
 						))}
 					</div>
 				</div>
