@@ -1,13 +1,37 @@
 import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { sampleJobs, stages } from '../../sampleData'
-import { Job, Stage } from '../../types/board'
 import { Column } from '../Column/Column'
+import { Job, Stage } from '../../types/board'
+
+function reorderSameList(list: Job[], startIndex: number, endIndex: number) {
+	const result = [...list]
+	const [removed] = result.splice(startIndex, 1)
+
+	result.splice(endIndex, 0, removed)
+
+	return result
+}
+
+function moveBetweenLists(
+	source: Job[],
+	destination: Job[],
+	sourceIndex: number,
+	destinationIndex: number
+) {
+	const sourceClone = [...source]
+	const destClone = [...destination]
+	const [removed] = sourceClone.splice(sourceIndex, 1)
+	destClone.splice(destinationIndex, 0, removed)
+
+	return { sourceClone, destClone, movedItem: removed }
+}
 
 export const Board = () => {
 	const [columns, setColumns] = useState<Record<Stage, Job[]>>(() =>
 		stages.reduce((acc, stage) => {
 			acc[stage] = sampleJobs.filter((job) => job.stage === stage)
+
 			return acc
 		}, {} as Record<Stage, Job[]>)
 	)
@@ -15,29 +39,41 @@ export const Board = () => {
 	const onDragEnd = (result: DropResult) => {
 		const { source, destination } = result
 
+		if (!destination) return
+
 		if (
-			!destination ||
-			(source.droppableId === destination.droppableId &&
-				source.index === destination.index)
-		) {
+			source.droppableId === destination.droppableId &&
+			source.index === destination.index
+		)
 			return
-		}
 
-		const sourceStage = source.droppableId as Stage
-		const destinationStage = destination.droppableId as Stage
+		setColumns((prev) => {
+			const sourceStage = source.droppableId as Stage
+			const destinationStage = destination.droppableId as Stage
 
-		const sourceJobs = Array.from(columns[sourceStage])
-		const [movedJob] = sourceJobs.splice(source.index, 1)
-
-		movedJob.stage = destinationStage
-
-		const destinationJobs = Array.from(columns[destinationStage])
-		destinationJobs.splice(destination.index, 0, movedJob)
-
-		setColumns({
-			...columns,
-			[sourceStage]: sourceJobs,
-			[destinationStage]: destinationJobs,
+			if (sourceStage === destinationStage) {
+				return {
+					...prev,
+					[sourceStage]: reorderSameList(
+						prev[sourceStage],
+						source.index,
+						destination.index
+					),
+				}
+			} else {
+				const { sourceClone, destClone, movedItem } = moveBetweenLists(
+					prev[sourceStage],
+					prev[destinationStage],
+					source.index,
+					destination.index
+				)
+				movedItem.stage = destinationStage
+				return {
+					...prev,
+					[sourceStage]: sourceClone,
+					[destinationStage]: destClone,
+				}
+			}
 		})
 	}
 
