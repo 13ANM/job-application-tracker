@@ -1,27 +1,64 @@
-import React from 'react'
-import { stages, sampleJobs } from '../../sampleData'
-import { Stage, Job } from '../../types/board'
-import Card from '../Card/Card'
+import { useState } from 'react'
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
+import { sampleJobs, stages } from '../../sampleData'
+import { Job, Stage } from '../../types/board'
+import { Column } from '../Column/Column'
 
-export const Board: React.FC = () => {
-	// Group jobs by their stage
-	const jobsByStage = stages.reduce((acc, stage) => {
-		acc[stage] = sampleJobs.filter((job) => job.stage === stage)
-		return acc
-	}, {} as Record<Stage, Job[]>)
+export const Board = () => {
+	const [columns, setColumns] = useState<Record<Stage, Job[]>>(() =>
+		stages.reduce((acc, stage) => {
+			acc[stage] = sampleJobs.filter((job) => job.stage === stage)
+			return acc
+		}, {} as Record<Stage, Job[]>)
+	)
+
+	const onDragEnd = (result: DropResult) => {
+		const { source, destination } = result
+
+		if (
+			!destination ||
+			(source.droppableId === destination.droppableId &&
+				source.index === destination.index)
+		) {
+			return
+		}
+
+		const sourceStage = source.droppableId as Stage
+		const destinationStage = destination.droppableId as Stage
+
+		const sourceJobs = Array.from(columns[sourceStage])
+		const [movedJob] = sourceJobs.splice(source.index, 1)
+
+		movedJob.stage = destinationStage
+
+		const destinationJobs = Array.from(columns[destinationStage])
+		destinationJobs.splice(destination.index, 0, movedJob)
+
+		setColumns({
+			...columns,
+			[sourceStage]: sourceJobs,
+			[destinationStage]: destinationJobs,
+		})
+	}
 
 	return (
-		<div className='flex space-x-4 p-4'>
-			{stages.map((stage) => (
-				<div key={stage} className='flex-1 p-4 bg-gray-100 rounded-lg shadow'>
-					<h2 className='text-lg font-bold mb-4'>{stage}</h2>
-					<div className='space-y-2'>
-						{jobsByStage[stage]?.map((job) => (
-							<Card key={job.id} job={job} />
-						))}
-					</div>
-				</div>
-			))}
-		</div>
+		<DragDropContext onDragEnd={onDragEnd}>
+			<div className='flex space-x-4 p-4 bg-gray-50 min-h-screen'>
+				{stages.map((stage) => (
+					<Droppable key={stage} droppableId={stage}>
+						{(provided) => (
+							<div
+								ref={provided.innerRef}
+								{...provided.droppableProps}
+								className='flex-1 bg-gray-100 p-4 rounded-lg shadow'
+							>
+								<Column title={stage} jobs={columns[stage]} />
+								{provided.placeholder}
+							</div>
+						)}
+					</Droppable>
+				))}
+			</div>
+		</DragDropContext>
 	)
 }
