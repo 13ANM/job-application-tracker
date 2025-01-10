@@ -1,19 +1,21 @@
-import { Job } from '../../types/board'
 import { Draggable } from 'react-beautiful-dnd'
+import { Job } from '../../types/board'
 
 interface Props {
 	job: Job
 	index: number
+	onClick: () => void
 }
 
-export const Card = ({ job, index }: Props) => (
+export const Card = ({ job, index, onClick }: Props) => (
 	<Draggable draggableId={job.id} index={index}>
 		{(provided, snapshot) => (
 			<div
+				onClick={onClick}
 				ref={provided.innerRef}
 				{...provided.draggableProps}
 				{...provided.dragHandleProps}
-				className={`p-4 bg-white rounded-lg shadow-sm border ${
+				className={`p-4 bg-white rounded-lg shadow-sm border cursor-pointer ${
 					snapshot.isDragging ? 'bg-blue-50' : ''
 				}`}
 			>
