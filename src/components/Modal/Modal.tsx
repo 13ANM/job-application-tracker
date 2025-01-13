@@ -5,9 +5,17 @@ interface Props {
 	initialJob: Partial<Job>
 	onClose: () => void
 	onSave: (updated: Partial<Job>) => void
+	onDelete: () => void
+	isNew: boolean
 }
 
-export const Modal = ({ initialJob, onClose, onSave }: Props) => {
+export const Modal = ({
+	initialJob,
+	onClose,
+	onSave,
+	onDelete,
+	isNew,
+}: Props) => {
 	const [title, setTitle] = useState(initialJob.title || '')
 	const [company, setCompany] = useState(initialJob.company || '')
 	const [status, setStatus] = useState<Status>(
@@ -17,6 +25,10 @@ export const Modal = ({ initialJob, onClose, onSave }: Props) => {
 
 	function handleSubmit() {
 		onSave({ title, company, status, stage })
+	}
+
+	function handleDelete() {
+		onDelete()
 	}
 
 	return (
@@ -60,6 +72,14 @@ export const Modal = ({ initialJob, onClose, onSave }: Props) => {
 					<option value={Stage.Done}>{Stage.Done}</option>
 				</select>
 				<div className='flex justify-end space-x-2'>
+					{!isNew && (
+						<button
+							onClick={handleDelete}
+							className='px-4 py-2 bg-red-600 text-white rounded'
+						>
+							Delete
+						</button>
+					)}
 					<button onClick={onClose} className='px-4 py-2 border rounded'>
 						Cancel
 					</button>

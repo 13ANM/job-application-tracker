@@ -73,6 +73,22 @@ export const Board = () => {
 		}
 	}
 
+	async function deleteJob(job: Job) {
+		const { error } = await supabase.from('jobs').delete().eq('id', job.id)
+
+		if (!error) {
+			setColumns((prev) => {
+				const copy = { ...prev }
+
+				for (const stage of stages) {
+					copy[stage] = copy[stage].filter((j) => j.id !== job.id)
+				}
+
+				return copy
+			})
+		}
+	}
+
 	function onDragEnd(result: DropResult) {
 		const { source, destination } = result
 
@@ -83,6 +99,7 @@ export const Board = () => {
 			source.index === destination.index
 		)
 			return
+
 		setColumns((prev) => {
 			const sourceStage = source.droppableId as Stage
 			const destinationStage = destination.droppableId as Stage
@@ -135,6 +152,13 @@ export const Board = () => {
 		setIsModalOpen(false)
 	}
 
+	function handleModalDelete() {
+		if (editingJob) {
+			deleteJob(editingJob)
+			setIsModalOpen(false)
+		}
+	}
+
 	useEffect(() => {
 		fetchJobs()
 	}, [])
@@ -146,9 +170,10 @@ export const Board = () => {
 					initialJob={editingJob || {}}
 					onClose={() => setIsModalOpen(false)}
 					onSave={handleModalSave}
+					onDelete={handleModalDelete}
+					isNew={isAdding}
 				/>
 			)}
-
 			<DragDropContext onDragEnd={onDragEnd}>
 				<div className='flex space-x-4 p-4 bg-gray-50 min-h-screen'>
 					{stages.map((stage) => (
