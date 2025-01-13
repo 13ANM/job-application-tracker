@@ -1,6 +1,7 @@
 import { Draggable } from 'react-beautiful-dnd'
 
-import { Job, Status } from '../../types/board'
+import { Job } from '../../types/board'
+import { getCardClassName, getStatusPillClassName } from './styles'
 
 interface Props {
   job: Job
@@ -16,27 +17,13 @@ export const Card = ({ job, index, onClick }: Props) => (
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
-        className={`p-4 bg-white rounded-lg shadow-sm border cursor-pointer space-y-1 ${
-          snapshot.isDragging ? 'bg-blue-50' : ''
-        }`}
+        className={getCardClassName(snapshot.isDragging)}
       >
         <h3 className='font-medium text-base'>{job.title}</h3>
 
         <p className='text-sm text-gray-500'>{job.company}</p>
 
-        <span
-          className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
-            job.status === Status.Scheduled
-              ? 'bg-blue-100 text-blue-700'
-              : job.status === Status.AwaitingResponse
-                ? 'bg-yellow-100 text-yellow-700'
-                : job.status === Status.Offer
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-gray-100 text-gray-700'
-          }`}
-        >
-          {job.status}
-        </span>
+        <span className={getStatusPillClassName(job.status)}>{job.status}</span>
       </div>
     )}
   </Draggable>

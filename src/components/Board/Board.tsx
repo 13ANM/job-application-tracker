@@ -6,6 +6,11 @@ import { supabase } from '../../supabase'
 import { Job, Stage } from '../../types/board'
 import { Column } from '../Column/Column'
 import { Modal } from '../Modal/Modal'
+import {
+  AddNewCardButtonClassNames,
+  BoardColumnContainerClassNames,
+  BoardContainerClassNames
+} from './styles'
 import { getInitialColumns } from './utils/get-initial-columns'
 import { moveBetweenLists } from './utils/move-between-lists'
 import { reorderSameList } from './utils/reorder-same-list'
@@ -179,14 +184,14 @@ export const Board = () => {
         />
       )}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className='flex space-x-4 p-4 bg-gray-50 min-h-screen'>
+        <div className={BoardContainerClassNames}>
           {stages.map(stage => (
             <Droppable key={stage} droppableId={stage}>
               {provided => (
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className='flex-1 bg-gray-100 p-4 rounded-lg shadow'
+                  className={BoardColumnContainerClassNames}
                 >
                   <Column
                     title={stage}
@@ -200,7 +205,7 @@ export const Board = () => {
           ))}
           <button
             onClick={handleAddCard}
-            className='h-10 px-4 py-2 bg-green-500 text-white rounded'
+            className={AddNewCardButtonClassNames}
           >
             Add New Card
           </button>

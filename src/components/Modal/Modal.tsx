@@ -1,6 +1,17 @@
 import { useState } from 'react'
 
 import { Job, Stage, Status } from '../../types/board'
+import {
+  ModalButtonContainerClassNames,
+  ModalCancelButtonClassNames,
+  ModalContainerClassNames,
+  ModalDeleteButtonClassNames,
+  ModalInnerClassNames,
+  ModalInputClassNames,
+  ModalSaveButtonClassNames,
+  ModalSelectClassNames,
+  ModalTitleClassNames
+} from './styles'
 
 interface Props {
   initialJob: Partial<Job>
@@ -33,25 +44,26 @@ export const Modal = ({
   }
 
   return (
-    <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50'>
-      <div className='bg-white p-4 rounded shadow-md w-96 space-y-4'>
-        <h2 className='text-xl font-semibold'>
+    <div className={ModalContainerClassNames}>
+      <div className={ModalInnerClassNames}>
+        <h2 className={ModalTitleClassNames}>
           {initialJob.id ? 'Edit Job' : 'Add Job'}
         </h2>
+
         <input
-          className='w-full border p-2 rounded'
+          className={ModalInputClassNames}
           placeholder='Title'
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
         <input
-          className='w-full border p-2 rounded'
+          className={ModalInputClassNames}
           placeholder='Company'
           value={company}
           onChange={e => setCompany(e.target.value)}
         />
         <select
-          className='w-full border p-2 rounded'
+          className={ModalSelectClassNames}
           value={status}
           onChange={e => setStatus(e.target.value as Status)}
         >
@@ -62,7 +74,7 @@ export const Modal = ({
           <option value={Status.Offer}>{Status.Offer}</option>
         </select>
         <select
-          className='w-full border p-2 rounded'
+          className={ModalSelectClassNames}
           value={stage}
           onChange={e => setStage(e.target.value as Stage)}
         >
@@ -72,22 +84,20 @@ export const Modal = ({
           <option value={Stage.Technical}>{Stage.Technical}</option>
           <option value={Stage.Done}>{Stage.Done}</option>
         </select>
-        <div className='flex justify-end space-x-2'>
+
+        <div className={ModalButtonContainerClassNames}>
           {!isNew && (
             <button
               onClick={handleDelete}
-              className='px-4 py-2 bg-red-600 text-white rounded'
+              className={ModalDeleteButtonClassNames}
             >
               Delete
             </button>
           )}
-          <button onClick={onClose} className='px-4 py-2 border rounded'>
+          <button onClick={onClose} className={ModalCancelButtonClassNames}>
             Cancel
           </button>
-          <button
-            onClick={handleSubmit}
-            className='px-4 py-2 bg-blue-600 text-white rounded'
-          >
+          <button onClick={handleSubmit} className={ModalSaveButtonClassNames}>
             Save
           </button>
         </div>
