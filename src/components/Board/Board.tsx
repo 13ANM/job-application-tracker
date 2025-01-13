@@ -5,29 +5,13 @@ import { stages } from '../../sampleData'
 import { Column } from '../Column/Column'
 import { Job, Stage } from '../../types/board'
 import { Modal } from '../Modal/Modal'
-
-function reorderSameList(list: Job[], startIndex: number, endIndex: number) {
-	const result = [...list]
-	const [removed] = result.splice(startIndex, 1)
-	result.splice(endIndex, 0, removed)
-	return result
-}
-
-function moveBetweenLists(
-	source: Job[],
-	destination: Job[],
-	sourceIndex: number,
-	destinationIndex: number
-) {
-	const sourceClone = [...source]
-	const destClone = [...destination]
-	const [removed] = sourceClone.splice(sourceIndex, 1)
-	destClone.splice(destinationIndex, 0, removed)
-	return { sourceClone, destClone, movedItem: removed }
-}
+import { getInitialColumns } from './utils/get-initial-columns'
+import { reorderSameList } from './utils/reorder-same-list'
+import { moveBetweenLists } from './utils/move-between-lists'
 
 export const Board = () => {
-	const [columns, setColumns] = useState<Record<Stage, Job[]>>({})
+	const [columns, setColumns] =
+		useState<Record<Stage, Job[]>>(getInitialColumns)
 	const [editingJob, setEditingJob] = useState<Job | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isAdding, setIsAdding] = useState(false)
@@ -80,7 +64,7 @@ export const Board = () => {
 					copy[stage] = copy[stage].filter((j) => j.id !== updated.id)
 				}
 
-				const updatedStage = data[0].stage
+				const updatedStage = data[0].stage as Stage
 
 				copy[updatedStage].push(data[0])
 
@@ -164,6 +148,7 @@ export const Board = () => {
 					onSave={handleModalSave}
 				/>
 			)}
+
 			<DragDropContext onDragEnd={onDragEnd}>
 				<div className='flex space-x-4 p-4 bg-gray-50 min-h-screen'>
 					{stages.map((stage) => (
