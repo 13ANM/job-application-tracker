@@ -5,6 +5,7 @@ export function getInitialColumns(): Record<Stage, Job[]> {
   return stages.reduce(
     (acc, stage) => {
       acc[stage] = []
+
       return acc
     },
     {} as Record<Stage, Job[]>

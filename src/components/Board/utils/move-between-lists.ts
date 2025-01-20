@@ -9,6 +9,8 @@ export function moveBetweenLists(
   const sourceClone = [...source]
   const destClone = [...destination]
   const [removed] = sourceClone.splice(sourceIndex, 1)
+
   destClone.splice(destinationIndex, 0, removed)
+
   return { sourceClone, destClone, movedItem: removed }
 }
