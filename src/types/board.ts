@@ -27,5 +27,6 @@ export interface Job {
   company: string
   stage: Stage
   status: Status
+  link?: string
   notes?: string
 }

@@ -34,9 +34,11 @@ export const Modal = ({
     initialJob.status || Status.Scheduled
   )
   const [stage, setStage] = useState<Stage>(initialJob.stage || Stage.Applied)
+  const [link, setLink] = useState(initialJob.link || '')
+  const [notes, setNotes] = useState(initialJob.notes || '')
 
   function handleSubmit() {
-    onSave({ title, company, status, stage })
+    onSave({ title, company, status, stage, link, notes })
   }
 
   function handleDelete() {
@@ -61,6 +63,18 @@ export const Modal = ({
           placeholder='Company'
           value={company}
           onChange={e => setCompany(e.target.value)}
+        />
+        <input
+          className={ModalInputClassNames}
+          placeholder='Link'
+          value={link}
+          onChange={e => setLink(e.target.value)}
+        />
+        <input
+          className={ModalInputClassNames}
+          placeholder='Notes'
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
         />
         <select
           className={ModalSelectClassNames}

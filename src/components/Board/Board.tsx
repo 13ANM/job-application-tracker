@@ -60,7 +60,9 @@ export const Board = () => {
         title: updated.title,
         company: updated.company,
         status: updated.status,
-        stage: updated.stage
+        stage: updated.stage,
+        link: updated.link,
+        notes: updated.notes
       })
       .eq('id', updated.id)
       .select()
@@ -129,7 +131,6 @@ export const Board = () => {
           source.index,
           destination.index
         )
-
         movedItem.stage = destinationStage
 
         updateJob(movedItem)
