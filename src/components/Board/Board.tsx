@@ -197,7 +197,7 @@ export const Board = () => {
             onClick={handleAddCard}
             className={AddNewCardButtonClassNames}
           >
-            Add New Card
+            +
           </button>
         </div>
       </DragDropContext>

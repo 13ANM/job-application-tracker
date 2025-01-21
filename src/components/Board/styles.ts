@@ -4,5 +4,24 @@ export const BoardContainerClassNames =
 export const BoardColumnContainerClassNames =
   'flex-1 bg-gray-100 p-4 rounded-lg shadow'
 
-export const AddNewCardButtonClassNames =
-  'h-10 px-4 py-2 bg-green-500 text-white rounded'
+export const AddNewCardButtonClassNames = `
+  fixed
+  top-8
+  right-8
+  bg-green-500
+  text-white
+  text-2xl
+  font-bold
+  rounded-full
+  w-12
+  h-12
+  flex
+  items-center
+  justify-center
+  shadow-lg
+  hover:bg-green-600
+  focus:outline-none
+  focus:ring-2
+  focus:ring-green-400
+  focus:ring-offset-2
+`
