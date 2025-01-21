@@ -1,10 +1,10 @@
 import { Job } from '../../../types/board'
 
-export function reorderSameList(
+export const reorderSameList = (
   list: Job[],
   startIndex: number,
   endIndex: number
-) {
+) => {
   const result = [...list]
   const [removed] = result.splice(startIndex, 1)
 

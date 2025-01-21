@@ -1,11 +1,11 @@
 import { Job } from '../../../types/board'
 
-export function moveBetweenLists(
+export const moveBetweenLists = (
   source: Job[],
   destination: Job[],
   sourceIndex: number,
   destinationIndex: number
-) {
+) => {
   const sourceClone = [...source]
   const destClone = [...destination]
   const [removed] = sourceClone.splice(sourceIndex, 1)
