@@ -2,10 +2,16 @@ import { useEffect, useState } from 'react'
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
 import { stages } from '../../sampleData'
-import { supabase } from '../../supabase'
 import { Job, Stage } from '../../types/board'
 import { Column } from '../Column/Column'
 import { Modal } from '../Modal/Modal'
+import {
+  createJobInSupabase,
+  deleteJobInSupabase,
+  fetchJobsFromSupabase,
+  groupJobsByStage,
+  updateJobInSupabase
+} from './services'
 import {
   AddNewCardButtonClassNames,
   BoardColumnContainerClassNames,
@@ -23,24 +29,15 @@ export const Board = () => {
   const [isAdding, setIsAdding] = useState(false)
 
   async function fetchJobs() {
-    const { data, error } = await supabase.from('jobs').select('*')
+    const { data, error } = await fetchJobsFromSupabase()
 
     if (error || !data) return
 
-    const grouped = stages.reduce(
-      (acc, stage) => {
-        acc[stage] = data.filter((job: Job) => job.stage === stage)
-
-        return acc
-      },
-      {} as Record<Stage, Job[]>
-    )
-
-    setColumns(grouped)
+    setColumns(groupJobsByStage(data))
   }
 
   async function createJob(newJob: Partial<Job>) {
-    const { data, error } = await supabase.from('jobs').insert(newJob).select()
+    const { data, error } = await createJobInSupabase(newJob)
 
     if (!error && data) {
       setColumns(prev => {
@@ -54,19 +51,7 @@ export const Board = () => {
   }
 
   async function updateJob(updated: Job) {
-    const { data, error } = await supabase
-      .from('jobs')
-      .update({
-        title: updated.title,
-        company: updated.company,
-        status: updated.status,
-        stage: updated.stage,
-        link: updated.link,
-        notes: updated.notes
-      })
-      .eq('id', updated.id)
-      .select()
-
+    const { data, error } = await updateJobInSupabase(updated)
     if (!error && data) {
       setColumns(prev => {
         const copy = { ...prev }
@@ -85,7 +70,7 @@ export const Board = () => {
   }
 
   async function deleteJob(job: Job) {
-    const { error } = await supabase.from('jobs').delete().eq('id', job.id)
+    const { error } = await deleteJobInSupabase(job)
 
     if (!error) {
       setColumns(prev => {
@@ -131,6 +116,7 @@ export const Board = () => {
           source.index,
           destination.index
         )
+
         movedItem.stage = destinationStage
 
         updateJob(movedItem)
@@ -158,7 +144,9 @@ export const Board = () => {
 
   function handleModalSave(jobData: Partial<Job>) {
     if (isAdding) createJob(jobData)
-    else if (editingJob) updateJob({ ...editingJob, ...jobData })
+
+    if (editingJob) updateJob({ ...editingJob, ...jobData })
+
     setIsModalOpen(false)
   }
 
@@ -204,6 +192,7 @@ export const Board = () => {
               )}
             </Droppable>
           ))}
+
           <button
             onClick={handleAddCard}
             className={AddNewCardButtonClassNames}
