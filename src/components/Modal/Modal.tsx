@@ -10,6 +10,7 @@ import {
   ModalInputClassNames,
   ModalSaveButtonClassNames,
   ModalSelectClassNames,
+  ModalTextAreaClassNames,
   ModalTitleClassNames
 } from './styles'
 
@@ -70,10 +71,11 @@ export const Modal = ({
           value={link}
           onChange={e => setLink(e.target.value)}
         />
-        <input
-          className={ModalInputClassNames}
+        <textarea
+          className={ModalTextAreaClassNames}
           placeholder='Notes'
           value={notes}
+          rows={5}
           onChange={e => setNotes(e.target.value)}
         />
         <select
