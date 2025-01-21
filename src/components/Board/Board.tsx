@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
-import { stages } from '../../sampleData'
+import { stages } from '../../constants'
 import { Job, Stage } from '../../types/board'
 import { Column } from '../Column/Column'
 import { Modal } from '../Modal/Modal'

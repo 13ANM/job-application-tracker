@@ -1,4 +1,4 @@
-import { stages } from '../../../sampleData'
+import { stages } from '../../../constants'
 import { Job, Stage } from '../../../types/board'
 
 export function getInitialColumns(): Record<Stage, Job[]> {

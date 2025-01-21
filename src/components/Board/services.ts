@@ -1,5 +1,4 @@
-// services.ts
-import { stages } from '../../sampleData'
+import { stages } from '../../constants'
 import { supabase } from '../../supabase'
 import { Job, Stage } from '../../types/board'
 
