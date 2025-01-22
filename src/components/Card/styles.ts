@@ -14,6 +14,7 @@ export const getStatusPillClassName = (status: string) =>
     status === Status.Scheduled && 'bg-blue-100 text-blue-700',
     status === Status.AwaitingResponse && 'bg-yellow-100 text-yellow-700',
     status === Status.Offer && 'bg-green-100 text-green-700',
+    status === Status.NoOffer && 'bg-red-100 text-red-700',
     status !== Status.Scheduled &&
       status !== Status.AwaitingResponse &&
       status !== Status.Offer &&

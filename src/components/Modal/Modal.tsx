@@ -88,6 +88,7 @@ export const Modal = ({
             {Status.AwaitingResponse}
           </option>
           <option value={Status.Offer}>{Status.Offer}</option>
+          <option value={Status.NoOffer}>{Status.NoOffer}</option>
         </select>
         <select
           className={ModalSelectClassNames}
