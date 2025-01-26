@@ -5,7 +5,7 @@ export const BoardColumnContainerClassNames =
 
 export const AddNewCardButtonClassNames = `
   fixed
-  top-8
+  bottom-8
   right-8
   bg-green-500
   text-white
