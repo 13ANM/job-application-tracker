@@ -1,16 +1,31 @@
-import { Job } from '../../types/board'
+import { Job, Stage } from '../../types/board'
 import { Card } from '../Card/Card'
-import { ColumnJobsWrapperClassNames, ColumnTitleClassNames } from './styles'
+import {
+  ColumnEraseButtonClassNames,
+  ColumnHeaderClassNames,
+  ColumnJobsWrapperClassNames,
+  ColumnTitleClassNames
+} from './styles'
 
 interface Props {
-  title: string
+  title: Stage
   jobs: Job[]
   onCardClick: (job: Job) => void
+  onEraseColumn: (stage: Stage) => void
 }
 
-export const Column = ({ title, jobs, onCardClick }: Props) => (
+export const Column = ({ title, jobs, onCardClick, onEraseColumn }: Props) => (
   <div>
-    <h2 className={ColumnTitleClassNames}>{title}</h2>
+    <div className={ColumnHeaderClassNames}>
+      <h2 className={ColumnTitleClassNames}>{title}</h2>
+
+      <button
+        onClick={() => onEraseColumn(title)}
+        className={ColumnEraseButtonClassNames}
+      >
+        Clear
+      </button>
+    </div>
 
     <div className={ColumnJobsWrapperClassNames}>
       {jobs.map((job, index) => (

@@ -29,6 +29,10 @@ export const deleteJobInSupabase = async (job: Job) => {
   return supabase.from('jobs').delete().eq('id', job.id)
 }
 
+export const deleteColumnInSupabase = async (stage: Stage) => {
+  return supabase.from('jobs').delete().eq('stage', stage)
+}
+
 export const groupJobsByStage = (data: Job[]) => {
   return stages.reduce(
     (acc, stage) => {

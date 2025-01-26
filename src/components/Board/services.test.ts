@@ -4,6 +4,7 @@ import { supabase } from '../../supabase'
 import { Job, Stage } from '../../types/board'
 import {
   createJobInSupabase,
+  deleteColumnInSupabase,
   deleteJobInSupabase,
   fetchJobsFromSupabase,
   groupJobsByStage,
@@ -85,13 +86,22 @@ describe('services', () => {
     expect(result.error).toBe(null)
   })
 
+  it('deleteColumnInSupabase deletes all jobs by stage', async () => {
+    const stageToDelete = Stage.HR
+    const result = await deleteColumnInSupabase(stageToDelete)
+
+    expect(supabase.from).toHaveBeenCalledWith('jobs')
+    expect(result.error).toBe(null)
+  })
+
   it('groupJobsByStage groups jobs correctly', () => {
     const jobs = [
-      { id: '1', title: 'T1', stage: Stage.Applied } as Job,
-      { id: '2', title: 'T2', stage: Stage.Applied } as Job,
-      { id: '3', title: 'T3', stage: Stage.HR } as Job,
-      { id: '4', title: 'T4', stage: Stage.Done } as Job
-    ]
+      { id: '1', title: 'T1', stage: Stage.Applied },
+      { id: '2', title: 'T2', stage: Stage.Applied },
+      { id: '3', title: 'T3', stage: Stage.HR },
+      { id: '4', title: 'T4', stage: Stage.Done }
+    ] as Job[]
+
     const grouped = groupJobsByStage(jobs)
 
     expect(grouped[Stage.Applied]).toHaveLength(2)

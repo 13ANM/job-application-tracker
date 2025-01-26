@@ -7,6 +7,7 @@ import { Column } from '../Column/Column'
 import { Modal } from '../Modal/Modal'
 import {
   createJobInSupabase,
+  deleteColumnInSupabase,
   deleteJobInSupabase,
   fetchJobsFromSupabase,
   groupJobsByStage,
@@ -79,6 +80,20 @@ export const Board = () => {
         for (const stage of stages) {
           copy[stage] = copy[stage].filter(j => j.id !== job.id)
         }
+
+        return copy
+      })
+    }
+  }
+
+  async function handleEraseColumn(stage: Stage) {
+    const { error } = await deleteColumnInSupabase(stage)
+
+    if (!error) {
+      setColumns(prev => {
+        const copy = { ...prev }
+
+        copy[stage] = []
 
         return copy
       })
@@ -186,6 +201,7 @@ export const Board = () => {
                     title={stage}
                     jobs={columns[stage] || []}
                     onCardClick={handleCardClick}
+                    onEraseColumn={handleEraseColumn}
                   />
                   {provided.placeholder}
                 </div>
