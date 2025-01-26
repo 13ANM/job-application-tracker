@@ -1,8 +1,7 @@
-export const BoardContainerClassNames =
-  'flex space-x-4 p-4 bg-gray-50 min-h-screen'
+export const BoardContainerClassNames = 'flex space-x-4 p-4 bg-gray-50 h-screen'
 
 export const BoardColumnContainerClassNames =
-  'flex-1 bg-gray-100 p-4 rounded-lg shadow'
+  'flex-1 bg-gray-100 p-4 rounded-lg shadow overflow-y-auto'
 
 export const AddNewCardButtonClassNames = `
   fixed
