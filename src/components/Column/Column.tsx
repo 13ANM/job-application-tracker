@@ -22,8 +22,22 @@ export const Column = ({ title, jobs, onCardClick, onEraseColumn }: Props) => (
       <button
         onClick={() => onEraseColumn(title)}
         className={ColumnEraseButtonClassNames}
+        aria-label='Erase Column'
       >
-        Clear
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={2}
+          stroke='currentColor'
+          className='w-5 h-5'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            d='M9 13h6m2 8H7a2 2 0 01-2-2V7h14v12a2 2 0 01-2 2zM9 7V4h6v3'
+          />
+        </svg>
       </button>
     </div>
 

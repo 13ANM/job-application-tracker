@@ -7,8 +7,10 @@ export const ColumnEraseButtonClassNames = `
   hover:bg-red-600
   text-white
   rounded
-  px-3
-  py-1
+  p-2
+  flex
+  items-center
+  justify-center
 `
 
 export const ColumnJobsWrapperClassNames = 'space-y-2 mt-4'
