@@ -18,6 +18,7 @@ export const AddNewCardButtonClassNames = `
   items-center
   justify-center
   shadow-lg
+  cursor-pointer
   hover:bg-green-600
   focus:outline-none
   focus:ring-2

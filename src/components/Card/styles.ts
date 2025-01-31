@@ -4,7 +4,7 @@ import { Status } from '../../types/board'
 
 export const getCardClassName = (isDragging: boolean) =>
   classNames(
-    'p-4 bg-white rounded-lg shadow-sm border cursor-pointer space-y-1',
+    'p-4 bg-white rounded-lg shadow-sm cursor-pointer space-y-1',
     isDragging && 'bg-blue-50'
   )
 

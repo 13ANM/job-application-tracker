@@ -11,6 +11,7 @@ export const ColumnEraseButtonClassNames = `
   flex
   items-center
   justify-center
+  cursor-pointer
 `
 
 export const ColumnJobsWrapperClassNames = 'space-y-2 mt-4'
